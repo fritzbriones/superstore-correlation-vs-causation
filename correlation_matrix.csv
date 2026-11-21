@@ -1,0 +1,7 @@
+,Discount,Order Quantity,Product Base Margin,Profit,Sales,Shipping Cost
+Discount,1.0,-0.014,-0.002,-0.039,-0.021,-0.002
+Order Quantity,-0.014,1.0,-0.002,0.125,0.36,-0.02
+Product Base Margin,-0.002,-0.002,1.0,-0.075,0.098,0.334
+Profit,-0.039,0.125,-0.075,1.0,0.372,-0.017
+Sales,-0.021,0.36,0.098,0.372,1.0,0.31
+Shipping Cost,-0.002,-0.02,0.334,-0.017,0.31,1.0

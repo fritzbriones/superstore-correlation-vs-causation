@@ -1,0 +1,24 @@
+{
+  "rows": 9426,
+  "pearson_discount_profit_pooled": -0.0395,
+  "naive_coef_discount": -1239.2906,
+  "naive_p": 0.000127,
+  "controlled_coef_discount": -976.1289,
+  "controlled_p": 0.001028,
+  "share_of_naive_effect_explained_by_controls": 0.2123,
+  "within_dept_corr_range": [
+    -0.063,
+    -0.027
+  ],
+  "within_dept_corr_median": -0.04,
+  "most_discounted_depts": [
+    "Office Supplies",
+    "Furniture",
+    "Technology"
+  ],
+  "thinnest_margin_depts": [
+    "Office Supplies",
+    "Furniture",
+    "Technology"
+  ]
+}
