@@ -44,5 +44,19 @@ All outputs (CSVs, JSON, `charts/`) are regenerated deterministically from `supe
 - Regression: OLS via statsmodels. Controlled model adds department fixed effects (dummies, baseline = Furniture), `Sales`, `Order Quantity`, `Product Base Margin`.
 - Confounding share: `1 − β_controlled / β_naive`.
 - This is observational data: "causation" claims here are deliberately conservative — controls shrink the naive effect but cannot fully establish causality (unmeasured confounders remain, e.g. pricing strategy by region).
+## Conclusion
 
+**Is discounting associated with lower profit? Yes — but the effect is smaller than a naive analysis suggests.**
+
+After controlling for department mix, sales volume, order quantity, and product base margin, the negative discount–profit relationship remains statistically significant (−$98 per 10% discount, *p* = 0.001). However, the adjusted estimate is approximately 21% smaller than the naive estimate (−$124). This difference suggests that part of the apparent discount penalty reflects department composition: lower-margin departments tend to offer larger discounts. The findings therefore support a more nuanced interpretation: discounting is associated with lower profit within the observed 0–10% range, but the naive model overstates the magnitude of that relationship. Neither "discounts are harmless" nor "discounts destroy profit" adequately captures the evidence.
+
+Three implications follow:
+
+1. **For business decision-makers:** Within the observed discount range, each 10% discount is associated with approximately $98 less profit per line. Any discount policy should therefore be evaluated against the additional volume needed to offset this reduction. However, the dataset cannot support reliable conclusions about deep discounts: only five observations exceed 20%.
+
+2. **For analysts:** Report effect sizes alongside statistical significance, adjust for plausible confounders before making causal interpretations, and explicitly identify the limits of the observed data.
+
+3. **For evidence-based management:** The difference between −$124 and −$98 illustrates why unadjusted relationships can mislead managerial decisions. Statistical adjustment does not automatically establish causality, but it provides a more credible basis for interpreting the relationship and informing decisions.
+
+*The strongest lesson is not simply that discounts are associated with lower profit. It is that asking "but is it causal?" changed the estimated effect by approximately a fifth. Good analysis does not merely produce numbers; it establishes what those numbers can—and cannot—justify.*
 *Built as part of a portfolio series while completing a Data Science & Analytics intensive bootcamp.*
