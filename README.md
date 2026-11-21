@@ -59,4 +59,6 @@ Three implications follow:
 3. **For evidence-based management:** The difference between −$124 and −$98 illustrates why unadjusted relationships can mislead managerial decisions. Statistical adjustment does not automatically establish causality, but it provides a more credible basis for interpreting the relationship and informing decisions.
 
 *The strongest lesson is not simply that discounts are associated with lower profit. It is that asking "but is it causal?" changed the estimated effect by approximately a fifth. Good analysis does not merely produce numbers; it establishes what those numbers can—and cannot—justify.*
+
+
 *Built as part of a portfolio series while completing a Data Science & Analytics intensive bootcamp.*
