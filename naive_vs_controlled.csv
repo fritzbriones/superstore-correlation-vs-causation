@@ -1,3 +1,7 @@
-model,discount_coef,std_err,p_value,r_squared
-Naive (Discount only),-1239.2906,323.2067,0.0001,0.0016
-Controlled (Dept FE + Sales + Qty + Margin),-976.1289,297.269,0.001,0.1565
+model,kind,effect_per_10pp,ci_low,ci_high,p_value,r_squared
+1. Naive: Discount only,ok,-123.9291,-183.4531,-64.405,0.0,0.0016
+2. + department,ok,-119.4598,-178.9101,-60.0095,0.0001,0.0094
+3. + sub-category (17),ok,-124.1155,-182.7988,-65.4322,0.0,0.0373
+"4. + base margin, unit price",ok,-125.4316,-184.4347,-66.4284,0.0,0.0569
+"5. + region, segment, year",main,-124.8898,-183.6986,-66.0809,0.0,0.0592
+"6. BAD: + Sales, Order Qty",bad,-90.7743,-144.1938,-37.3548,0.0009,0.237

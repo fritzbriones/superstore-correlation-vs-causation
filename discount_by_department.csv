@@ -1,0 +1,4 @@
+Department,lines,mean_discount,sales,profit,margin_pct
+Furniture,1933,0.0492,3178638,177337,5.579
+Office Supplies,5181,0.0502,2258384,451990,20.0139
+Technology,2312,0.0487,3515005,683088,19.4335
