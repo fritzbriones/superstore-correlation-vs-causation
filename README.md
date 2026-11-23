@@ -1,33 +1,68 @@
 # Correlation vs. Causation: Does Discounting *Cause* Profit Loss?
 
-A statistics-focused companion analysis to my [Superstore sales analysis](https://github.com/fritzbriones/superstore-sales-analysis). Where that project asked *what* drives profit, this one interrogates a single claim the data seems to support — "discounts destroy profit" — and asks what a cautious statistician would actually conclude.
+A statistics-focused companion to my [Superstore sales analysis](https://github.com/fritzbriones/superstore-sales-analysis).
+That project found that heavily discounted lines earn thinner margins. This one asks what a
+careful analyst can actually conclude from that, and what the business should do about it.
 
-**Key finding, in one paragraph:** A naive model says every 10% discount costs ~$124 of profit per order line. Controlling for department mix, sales volume, order quantity, and product base margin shrinks that to ~$98 — about a fifth of the naive effect was **confounding, not causation** (the departments that discount most, Office Supplies and Furniture, are also the thin-margin ones). Meanwhile the pooled Discount–Profit correlation (r = −0.04, p = 0.0001 at n = 9,426) is statistically significant but practically tiny: **significance tests reliability, not importance.** And with only 5 lines discounted above 20%, this dataset cannot support any claim about deep discounting.
+## Answer in one paragraph
 
-## The three lessons
+Each extra **10 points of discount is associated with $125 less profit per order line**
+(95% CI −$184 to −$66). That figure **does not change** when we adjust for everything known
+before the discount was set: department, 17 sub-categories, product base margin, unit price,
+region, customer segment and year. High- and low-discount lines look alike on all of these,
+so the data shows **no measurable confounding**. Discounts also **don't buy volume**: order
+quantity doesn't rise with discount (p = 0.17). Two big limits remain. Every claim covers
+only **0–10% discounts** (9,421 of 9,426 lines), and an observational dataset can't rule out
+confounders that weren't recorded.
 
-1. **Significant ≠ important.** With n = 9,426, even r = −0.04 gets p = 0.0001. Report the effect size and the p-value together, never one alone.
-2. **Confounding is quantifiable.** Compare the discount coefficient with and without controls: −$124 → −$98 per unit of discount. A real effect survives, but 21% of the naive story was composition (which products get discounted), not the discount itself.
-3. **Know where your data ends.** 9,368 of 9,426 lines are discounted 0–10%. The "profit cliff at deep discounts" is extrapolation from 5 rows. See `profit_by_discount_bin.csv`.
+## What the business should do
 
-Bonus heterogeneity find: pooled, Shipping Cost correlates +0.33 with Product Base Margin, but *within* the Technology department the correlation is −0.34. A pooled correlation can average away opposite underlying realities (a sign-flip cousin of Simpson's paradox).
+1. **Pilot lower discounts.** If the association is causal, current discounting costs about **$584K** of profit over four years (95% CI $309K–$859K), roughly 45% of total profit. Nothing in the data shows any volume benefit to offset that. A controlled test (e.g. cap discounts at 5% in some regions for a quarter) is cheap compared with that potential cost.
+2. **Start with big-ticket lines.** The median line loses only about **$20** per 10 points of discount, versus $125 on average, so the damage is concentrated in large orders. Discount approval rules should target high-value lines first.
+3. **Don't extrapolate.** The data says nothing about 20–50% promotions: only 2 lines exceed 20%.
+
+## Three lessons
+
+1. **Significant ≠ important.** The pooled Discount–Profit correlation is r = −0.04 (p = 0.0001, n = 9,426): statistically real but tiny, since discount explains 0.2% of profit variance. The dollar effect is what matters for decisions.
+2. **Bad controls manufacture "confounding".** An earlier version of this repo controlled for *Sales* and *Order Quantity* and reported that 21% of the effect was confounding. Both variables are **affected by the discount itself** (post-treatment). Controlling for them strips out part of the effect rather than removing bias. Using only pre-discount controls, the estimate moves by less than 1%.
+3. **Check balance before claiming confounding.** All three departments discount the same on average (4.9%, 4.9%, 5.0%), so department mix *can't* explain the effect, however different their margins (Furniture 5.6%, Office Supplies 20.0%, Technology 19.4%).
+
+Bonus: a pooled correlation can hide opposite relationships. Shipping cost vs product base margin is **+0.33** pooled but **−0.34** within Technology.
 
 ## Charts
 
-| Naive vs. controlled slope | Confounding anatomy |
-|---|---|
-| ![Naive vs controlled regression](naive_vs_controlled.png) | ![Most-discounted departments vs margins](confounding_anatomy.png) |
+**The estimate across models.** Pre-discount controls leave it unchanged; only the bad control shrinks it.
+![Coefficient ladder](naive_vs_controlled.png)
 
-## Repo layout
+**Balance check.** No pre-discount factor differs meaningfully between high- and low-discount lines.
+![Balance check](balance_check.png)
 
-| File | What it is |
-|---|---|
-| `analysis.py` | Full commented pipeline: correlations → confounding anatomy → OLS naive vs. controlled → bins → charts |
-| `superstore_clean.csv` | Tableau Sample Superstore (via Packt *Learning Tableau 10*), 9,426 rows, 2013–2016 |
-| `correlation_matrix.csv` | Pearson correlations, all 6 numeric variables |
-| `naive_vs_controlled.csv` | The key regression comparison (coefficients, SEs, p, R²) |
-| `profit_by_discount_bin.csv` | Profit and unprofitable-share by discount level — including the n = 5 deep-discount rows |
-| `simpson_by_subcategory.csv` / `causation_summary.json` | Department-level anatomy + machine-readable findings |
+**Where the data lives.** Almost every line is discounted 0–10%.
+![Discount distribution](discount_distribution.png)
+
+## Results table (`naive_vs_controlled.csv`)
+
+| Model | Effect per +10 pts discount | 95% CI |
+|---|---|---|
+| 1. Naive | −$124 | −$183 to −$64 |
+| 2. + department | −$119 | −$179 to −$60 |
+| 3. + sub-category (17) | −$124 | −$183 to −$65 |
+| 4. + base margin, unit price | −$125 | −$184 to −$66 |
+| **5. + region, segment, year (main)** | **−$125** | **−$184 to −$66** |
+| 6. BAD: + Sales, Order Qty (post-treatment) | −$91 | −$144 to −$37 |
+| Median regression (dept, base margin, price) | −$20 | −$28 to −$12 |
+
+## Method notes
+
+- OLS with heteroskedasticity-robust (HC3) standard errors; profit per line is heavy-tailed.
+- Balance: standardized mean difference of each pre-discount covariate between lines above and below the median discount (|d| < 0.1 is conventionally balanced; the largest here is 0.04).
+- Median regression checks that a few huge lines don't drive the result. They drive its *size*, not its *sign*.
+- "If causal" cost = main coefficient × the sum of all line discounts, assuming a linear effect within 0–10%.
+- The discount is spread almost perfectly uniformly from 0–10% and is unrelated to every product and customer attribute. That pattern is typical of a **synthetic training dataset**, so treat this as a method demonstration, not evidence about a real retailer.
+
+## Data source
+
+`superstore_clean.csv` is produced by [superstore-sales-analysis](https://github.com/fritzbriones/superstore-sales-analysis) from Packt's *Learning Tableau 10* `Superstore.csv` (verified byte-identical to the [publisher's repo](https://github.com/PacktPublishing/Learning-Tableau-10)). It has 9,426 lines from 2013–2016 for a fictional retailer. It is not Tableau's built-in *Sample – Superstore*.
 
 ## Reproduce
 
@@ -36,29 +71,7 @@ pip install -r requirements.txt
 python analysis.py
 ```
 
-All outputs (CSVs, JSON, `charts/`) are regenerated deterministically from `superstore_clean.csv`.
+Outputs: `naive_vs_controlled.csv`, `balance_table.csv`, `discount_by_department.csv`,
+`correlation_matrix.csv`, `causation_summary.json`, and the three PNGs (deterministic).
 
-## Method notes
-
-- Correlations: Pearson (numeric pairs, no imputation — the clean file has no missing values in used columns).
-- Regression: OLS via statsmodels. Controlled model adds department fixed effects (dummies, baseline = Furniture), `Sales`, `Order Quantity`, `Product Base Margin`.
-- Confounding share: `1 − β_controlled / β_naive`.
-- This is observational data: "causation" claims here are deliberately conservative — controls shrink the naive effect but cannot fully establish causality (unmeasured confounders remain, e.g. pricing strategy by region).
-## Conclusion
-
-**Is discounting associated with lower profit? Yes — but the effect is smaller than a naive analysis suggests.**
-
-After controlling for department mix, sales volume, order quantity, and product base margin, the negative discount–profit relationship remains statistically significant (−$98 per 10% discount, *p* = 0.001). However, the adjusted estimate is approximately 21% smaller than the naive estimate (−$124). This difference suggests that part of the apparent discount penalty reflects department composition: lower-margin departments tend to offer larger discounts. The findings therefore support a more nuanced interpretation: discounting is associated with lower profit within the observed 0–10% range, but the naive model overstates the magnitude of that relationship. Neither "discounts are harmless" nor "discounts destroy profit" adequately captures the evidence.
-
-Three implications follow:
-
-1. **For business decision-makers:** Within the observed discount range, each 10% discount is associated with approximately $98 less profit per line. Any discount policy should therefore be evaluated against the additional volume needed to offset this reduction. However, the dataset cannot support reliable conclusions about deep discounts: only five observations exceed 20%.
-
-2. **For analysts:** Report effect sizes alongside statistical significance, adjust for plausible confounders before making causal interpretations, and explicitly identify the limits of the observed data.
-
-3. **For evidence-based management:** The difference between −$124 and −$98 illustrates why unadjusted relationships can mislead managerial decisions. Statistical adjustment does not automatically establish causality, but it provides a more credible basis for interpreting the relationship and informing decisions.
-
-*The strongest lesson is not simply that discounts are associated with lower profit. It is that asking "but is it causal?" changed the estimated effect by approximately a fifth. Good analysis does not merely produce numbers; it establishes what those numbers can—and cannot—justify.*
-
-
-*Built as part of a portfolio series while completing a Data Science & Analytics intensive bootcamp.*
+*Part of a portfolio series built during a Data Science & Analytics intensive bootcamp.*

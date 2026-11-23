@@ -1,24 +1,47 @@
 {
-  "rows": 9426,
-  "pearson_discount_profit_pooled": -0.0395,
-  "naive_coef_discount": -1239.2906,
-  "naive_p": 0.000127,
-  "controlled_coef_discount": -976.1289,
-  "controlled_p": 0.001028,
-  "share_of_naive_effect_explained_by_controls": 0.2123,
-  "within_dept_corr_range": [
-    -0.063,
-    -0.027
+  "support": {
+    "lines": 9426,
+    "lines_0_to_10pct": 9421,
+    "lines_above_10pct": 5,
+    "lines_above_20pct": 2,
+    "max_discount": 0.25,
+    "mean_discount": 0.0496
+  },
+  "pearson_discount_profit": -0.0395,
+  "pearson_p": 0.000127,
+  "effect_per_10pp_naive": -123.9,
+  "effect_per_10pp_adjusted": -124.9,
+  "effect_per_10pp_adjusted_ci95": [
+    -183.7,
+    -66.1
   ],
-  "within_dept_corr_median": -0.04,
-  "most_discounted_depts": [
-    "Office Supplies",
-    "Furniture",
-    "Technology"
+  "effect_per_10pp_bad_control_model": -90.8,
+  "change_naive_to_adjusted_pct": 0.8,
+  "max_abs_std_mean_diff": 0.044,
+  "mean_discount_by_department": {
+    "Furniture": 0.0492,
+    "Office Supplies": 0.0502,
+    "Technology": 0.0487
+  },
+  "margin_pct_by_department": {
+    "Furniture": 5.6,
+    "Office Supplies": 20.0,
+    "Technology": 19.4
+  },
+  "median_regression_effect_per_10pp": -19.7,
+  "median_regression_ci95": [
+    -27.9,
+    -11.6
   ],
-  "thinnest_margin_depts": [
-    "Office Supplies",
-    "Furniture",
-    "Technology"
-  ]
+  "order_qty_effect_per_10pp": -0.7,
+  "order_qty_effect_p": 0.168,
+  "implied_profit_cost_of_all_discounts_if_causal": -584222.0,
+  "implied_cost_ci95": [
+    -309120.0,
+    -859324.0
+  ],
+  "sign_flip_example": {
+    "pooled_shipcost_vs_base_margin": 0.334,
+    "technology_only": -0.34
+  }
 }
